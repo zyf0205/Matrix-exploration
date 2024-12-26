@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>矩阵特征值与特征向量探索</title>
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <!-- 添加 CryptoJS 库 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+</head>
+<body>
+    <!-- 开始界面 -->
+    <div id="start-screen" class="screen">
+        <div class="start-content">
+            <h1 class="game-title">矩阵特征值与特征向量探索</h1>
+            <h2 class="game-subtitle">Matrix Eigenvalues & Eigenvectors Explorer</h2>
+            <button class="start-btn" onclick="startIntro()">开始探索</button>
+        </div>
+    </div>
+
+    <!-- 介绍界面 -->
+    <div id="intro-screen" class="screen hidden">
+        <div class="intro-text"></div>
+    </div>
+
+    <!-- 游戏界面 -->
+    <div id="game-screen" class="screen">
+        <!-- 游戏头部信息 -->
+        <div class="game-header">
+            <div class="game-info">
+                <div class="level-info">第 <span id="level-num">1</span> 关</div>
+                <div class="score-info">得分: <span id="score">0</span></div>
+                <div class="timer">时间: <span id="time-remaining">60</span>s</div>
+            </div>
+        </div>
+        
+        <!-- 游戏场景 -->
+        <div class="game-scene">
+            <!-- 星星和宇航员会在这里生成 -->
+        </div>
+        
+        <!-- 检查主要结构 -->
+        <div class="game-container">
+            <!-- 游戏画布 -->
+            <canvas id="gameCanvas"></canvas>
+            
+            <!-- 答题区域 -->
+            <div class="answer-area">
+                <div class="answer-content">
+                    <!-- 矩阵显示 -->
+                    <div class="matrix-display">
+                        <span>矩阵 A =</span>
+                        <div class="matrix-A">
+                            <div class="matrix-cell"></div>
+                            <div class="matrix-cell"></div>
+                            <div class="matrix-cell"></div>
+                            <div class="matrix-cell"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- 特征值输入 -->
+                    <div class="eigenvalue-area">
+                        <span class="input-label">特征值:</span>
+                        <div class="input-group">
+                            <input type="number" id="λ1" class="input-box" placeholder="λ₁">
+                            <input type="number" id="λ2" class="input-box" placeholder="λ₂">
+                        </div>
+                    </div>
+                    
+                    <!-- 特征向量1输入 -->
+                    <div class="vector-input">
+                        <span class="input-label">特征向量1:</span>
+                        <input type="number" id="x1" class="input-box" placeholder="x₁">
+                        <input type="number" id="y1" class="input-box" placeholder="y₁">
+                    </div>
+                    
+                    <!-- 特征向量2输入 -->
+                    <div class="vector-input">
+                        <span class="input-label">特征向量2:</span>
+                        <input type="number" id="x2" class="input-box" placeholder="x₂">
+                        <input type="number" id="y2" class="input-box" placeholder="y₂">
+                    </div>
+                    
+                    <!-- 提交按钮 -->
+                    <button class="submit-btn">提交答案</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 游戏结束界面 -->
+    <div id="game-over-screen" class="screen hidden">
+        <div class="game-over-content">
+            <h2>游戏结束</h2>
+            <p>当前关卡: <span id="final-level">1</span></p>
+            <p>最终得分: <span id="final-score">0</span></p>
+            <button id="restart-btn" class="restart-btn">重新开始</button>
+        </div>
+    </div>
+
+    <!-- 游戏通关界面 -->
+    <div id="game-complete-screen" class="screen hidden">
+        <div class="game-complete-content">
+            <h2>恭喜通关！</h2>
+            <div class="final-score">最终得分: <span id="complete-score">0</span></div>
+            <button class="restart-btn" onclick="startGame()">再玩一次</button>
+        </div>
+    </div>
+
+    <!-- JavaScript 文件，注意引入顺序 -->
+    <script src="js/ui/Modal.js"></script>
+    <script src="js/ui/IntroSequence.js"></script>  <!-- 确保在main.js之前加载 -->
+    <script src="js/game/Matrix.js"></script>
+    <script src="js/game/Level.js"></script>
+    <script src="js/game/Player.js"></script>
+    <script src="js/game/StarManager.js"></script>
+    <script src="js/game/Game.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html> 

@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>矩阵探索</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #000;
+            color: #fff;
+        }
+
+        /* 导航栏样式 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo img {
+            height: 40px;
+        }
+
+        .logo a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+        }
+
+        .nav-item {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: color 0.3s;
+            padding: 0.5rem 1rem;
+        }
+
+        .nav-item:hover {
+            color: #1E90FF;
+        }
+
+        /* 实时/合作按钮样式 */
+        .nav-item.btn-primary {
+            background: #1E90FF;
+            border-radius: 5px;
+            padding: 0.5rem 1.5rem;
+        }
+
+        .nav-item.btn-primary:hover {
+            background: #1976D2;
+            color: #fff;
+        }
+
+        /* 主要内容区域 */
+        .main-content {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(0,0,0,0.85), rgba(0,0,0,0.95));
+            position: relative;
+            z-index: 1;
+        }
+
+        .title {
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 3rem;
+            opacity: 0.8;
+            animation: fadeIn 1s ease-out 0.5s backwards;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 2rem;
+            animation: fadeIn 1s ease-out 1s backwards;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: #1E90FF;
+            color: #fff;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid #1E90FF;
+            color: #1E90FF;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(30,144,255,0.3);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 添加卡片样式 */
+        .cards-container {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 2rem;
+            width: 300px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+        }
+
+        .card h2 {
+            color: #1E90FF;
+            margin-bottom: 1rem;
+        }
+
+        .card p {
+            color: #fff;
+            margin-bottom: 2rem;
+            opacity: 0.8;
+        }
+
+        .start-btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            background: #1E90FF;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .start-btn:hover {
+            background: #1976D2;
+        }
+
+        /* Logo 容器样式 */
+        .logo-container {
+            position: relative;
+            width: 45px;
+            height: 45px;
+            perspective: 1000px;
+            margin-right: 15px;
+            cursor: pointer;
+        }
+
+        .matrix-cube {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            animation: autoRotate 20s linear infinite;
+            transition: transform 0.3s ease-out;
+        }
+
+        .matrix-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            background: rgba(0, 10, 30, 0.9);
+            border: 1px solid rgba(30, 144, 255, 0.5);
+            font-family: 'Courier New', monospace;
+            font-size: 8px;
+            color: rgba(30, 144, 255, 0.8);
+            box-shadow: inset 0 0 15px rgba(30, 144, 255, 0.3);
+        }
+
+        /* 添加粒子效果 */
+        .matrix-particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: rgba(30, 144, 255, 0.6);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: particleFloat 3s infinite ease-in-out;
+        }
+
+        .matrix-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: glow 1.5s infinite alternate;
+            text-shadow: 0 0 5px rgba(30, 144, 255, 0.5);
+        }
+
+        .matrix-face.front { transform: translateZ(22.5px); }
+        .matrix-face.back { transform: translateZ(-22.5px) rotateY(180deg); }
+        .matrix-face.right { transform: translateX(22.5px) rotateY(90deg); }
+        .matrix-face.left { transform: translateX(-22.5px) rotateY(-90deg); }
+        .matrix-face.top { transform: translateY(-22.5px) rotateX(90deg); }
+        .matrix-face.bottom { transform: translateY(22.5px) rotateX(-90deg); }
+
+        @keyframes particleFloat {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(10px, -10px); }
+        }
+
+        @keyframes glow {
+            0% { color: rgba(30, 144, 255, 0.5); }
+            100% { 
+                color: rgba(30, 144, 255, 1);
+                text-shadow: 0 0 8px rgba(30, 144, 255, 0.8);
+            }
+        }
+
+        /* 确保其他内容在 canvas 上层 */
+        .navbar {
+            z-index: 2;
+        }
+
+        .main-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Logo自动旋转动画 */
+        @keyframes autoRotate {
+            from { transform: rotateX(0) rotateY(0) rotateZ(0); }
+            to { transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
+        }
+
+        /* 修改鼠标悬停时的效果 */
+        .logo-container:hover .matrix-cube {
+            animation-play-state: paused;
+        }
+
+        /* 鼠标跟随粒子效果 */
+        .mouse-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(30, 144, 255, 0.6);
+            border-radius: 50%;
+            pointer-events: none;
+            mix-blend-mode: screen;
+            transition: transform 0.2s ease-out;
+        }
+
+        .attention {
+            position: absolute;
+            z-index: 999;
+            top: 50%;
+            left: 50%;
+            color: #fff;
+            font-size: 20px;
+            font-weight: light;
+            font-family: 'Quicksand', sans-serif;
+            letter-spacing: 10px;
+            white-space: nowrap;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            animation:
+                attention 3000ms linear forwards,
+                fade 3000ms linear forwards;
+        }
+
+        @keyframes attention {
+            0% {
+                letter-spacing: 10px;
+            }
+            
+            100% {
+                letter-spacing: 20px;
+            }
+        }
+
+        @keyframes fade {
+            0% {
+                opacity: 0;
+            }
+            
+            20% {
+                opacity: 1;
+            }
+            
+            100% {    
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 简化的导航栏 -->
+    <nav class="navbar">
+        <div class="logo">
+            <div class="logo-container">
+                <div class="matrix-cube">
+                    <div class="matrix-face front">
+                        <script>
+                            // 生成随机矩阵数字
+                            for(let i = 0; i < 12; i++) {
+                                document.write(`<div class="matrix-number">${Math.floor(Math.random() * 9)}</div>`);
+                            }
+                        </script>
+                    </div>
+                    <div class="matrix-face back">
+                        <script>
+                            for(let i = 0; i < 12; i++) {
+                                document.write(`<div class="matrix-number">${Math.floor(Math.random() * 9)}</div>`);
+                            }
+                        </script>
+                    </div>
+                    <div class="matrix-face right">
+                        <script>
+                            for(let i = 0; i < 12; i++) {
+                                document.write(`<div class="matrix-number">${Math.floor(Math.random() * 9)}</div>`);
+                            }
+                        </script>
+                    </div>
+                    <div class="matrix-face left">
+                        <script>
+                            for(let i = 0; i < 12; i++) {
+                                document.write(`<div class="matrix-number">${Math.floor(Math.random() * 9)}</div>`);
+                            }
+                        </script>
+                    </div>
+                    <div class="matrix-face top">
+                        <script>
+                            for(let i = 0; i < 12; i++) {
+                                document.write(`<div class="matrix-number">${Math.floor(Math.random() * 9)}</div>`);
+                            }
+                        </script>
+                    </div>
+                    <div class="matrix-face bottom">
+                        <script>
+                            for(let i = 0; i < 12; i++) {
+                                document.write(`<div class="matrix-number">${Math.floor(Math.random() * 9)}</div>`);
+                            }
+                        </script>
+                    </div>
+                </div>
+            </div>
+            <a href="#">矩阵探索</a>
+        </div>
+    </nav>
+
+    <!-- 主要内容区域 -->
+    <main class="main-content">
+        <h1 class="title">矩阵特征值与特征向量探索</h1>
+        <p class="subtitle">通过游戏和可视化教学，深入理解矩阵的特征值和特征向量</p>
+        
+        <!-- 添加卡片容器 -->
+        <div class="cards-container">
+            <!-- 游戏卡片 -->
+            <div class="card" onclick="navigateTo('game')">
+                <h2>游戏探索</h2>
+                <p>通过有趣的游戏方式，体验矩阵特征值与特征向量的计算过程</p>
+                <div class="start-btn">开始游戏</div>
+            </div>
+
+            <!-- 教学卡片 -->
+            <div class="card" onclick="navigateTo('teach')">
+                <h2>互动教学</h2>
+                <p>系统化线性代数课程，配合可视化演示，深入浅出</p>
+                <div class="start-btn">开始学习</div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 添加鼠标跟随粒子容器 -->
+    <div class="mouse-particles"></div>
+
+    <script>
+        // 生成粒子效果
+        function createParticles() {
+            const container = document.querySelector('.logo-container');
+            for (let i = 0; i < 10; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'matrix-particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 2 + 's';
+                container.appendChild(particle);
+            }
+        }
+        createParticles();
+
+        // 添加鼠标移动时的立方体旋转效果
+        document.querySelector('.logo-container').addEventListener('mousemove', (e) => {
+            const cube = document.querySelector('.matrix-cube');
+            const rect = e.currentTarget.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const rotateY = ((x / rect.width) - 0.5) * 45;
+            const rotateX = ((y / rect.height) - 0.5) * -45;
+            
+            requestAnimationFrame(() => {
+                cube.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            });
+        });
+        
+        // 鼠标离开时恢复原始状态
+        document.querySelector('.logo-container').addEventListener('mouseleave', () => {
+            const cube = document.querySelector('.matrix-cube');
+            cube.style.transform = 'rotateX(0) rotateY(0)';
+        });
+
+        // 页导航函数
+        function navigateTo(page) {
+            switch(page) {
+                case 'game':
+                    window.location.href = './game/game.html';
+                    break;
+                case 'teach':
+                    window.location.href = './teach/teach.html';
+                    break;
+                default:
+                    console.log('未知页面');
+            }
+        }
+
+        // 鼠标跟随粒子效果
+        class MouseParticles {
+            constructor() {
+                this.container = document.querySelector('.mouse-particles');
+                this.particles = [];
+                this.mouseX = 0;
+                this.mouseY = 0;
+                this.init();
+            }
+
+            init() {
+                // 减少粒子数量，优化性能
+                for(let i = 0; i < 10; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.style.width = (3 + Math.random() * 3) + 'px';
+                    particle.style.height = particle.style.width;
+                    particle.style.opacity = 0.6 + Math.random() * 0.4;
+                    this.container.appendChild(particle);
+                    this.particles.push({
+                        element: particle,
+                        x: 0,
+                        y: 0,
+                        delay: i * 2
+                    });
+                }
+
+                document.addEventListener('mousemove', (e) => {
+                    this.mouseX = e.clientX;
+                    this.mouseY = e.clientY;
+                    this.updateParticles();
+                });
+            }
+
+            updateParticles() {
+                this.particles.forEach((particle, index) => {
+                    setTimeout(() => {
+                        const dx = this.mouseX - particle.x;
+                        const dy = this.mouseY - particle.y;
+                        
+                        particle.x += dx * 0.15;
+                        particle.y += dy * 0.15;
+                        
+                        particle.element.style.transform = 
+                            `translate(${particle.x}px, ${particle.y}px) scale(${1 + Math.abs(dx + dy) * 0.001})`;
+                        
+                        particle.element.style.boxShadow = 
+                            `0 0 ${10 + Math.abs(dx + dy) * 0.05}px rgba(30, 144, 255, 0.3)`;
+                    }, particle.delay);
+                });
+            }
+        }
+
+        // 初始化鼠标跟随粒子
+        window.addEventListener('load', () => {
+            new MouseParticles();
+        });
+    </script>
+</body>
+</html> 

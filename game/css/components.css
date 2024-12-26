@@ -1,0 +1,1447 @@
+/* 基础样式重置 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 基础屏幕样式 */
+.screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 1s;
+}
+
+/* 开始界面 - 纯白背景 */
+#start-screen {
+    background: #ffffff;
+    font-family: 'Arial', sans-serif;
+}
+
+.start-content {
+    text-align: center;
+    animation: fadeIn 2s ease-in;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+}
+
+.game-title {
+    font-size: 42px;
+    color: #000;
+    margin: 0;
+    padding: 0;
+    text-transform: uppercase;
+    letter-spacing: 6px;
+    animation: glowText 2s ease-in-out infinite alternate;
+    line-height: 0.7;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    height: 42px;
+}
+
+.game-subtitle {
+    font-size: 22px;
+    color: #666;
+    margin: -15px auto 40px auto;
+    padding: 0;
+    letter-spacing: 3px;
+    animation: fadeInUp 1s ease-out 0.5s both;
+    max-width: 800px;
+    line-height: 1;
+    display: block;
+}
+
+
+/* 科幻风格按钮 */
+.start-btn {
+    padding: 15px 40px;
+    font-size: 20px;
+    color: #fff;
+    background: linear-gradient(45deg, #1a237e, #0d47a1);
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    box-shadow: 0 0 20px rgba(26, 35, 126, 0.5);
+    animation: fadeInUp 1s ease-out 1s both;
+}
+
+.start-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(26, 35, 126, 0.8);
+}
+
+.start-btn:before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.1);
+    transform: rotate(45deg);
+    animation: buttonGlow 2s linear infinite;
+}
+
+/* 文字浮现动画 */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes glowText {
+    from {
+        text-shadow: 0 0 10px rgba(26, 35, 126, 0.2);
+    }
+    to {
+        text-shadow: 0 0 20px rgba(26, 35, 126, 0.4);
+    }
+}
+
+@keyframes buttonGlow {
+    from {
+        transform: rotate(45deg) translateX(-100%);
+    }
+    to {
+        transform: rotate(45deg) translateX(100%);
+    }
+}
+
+/* 修改介绍动画样式 */
+.intro-text {
+    color: #ffffff;
+    font-size: 26px;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.5;
+    position: relative;
+}
+
+/* 添加字符渐现动画 */
+@keyframes charFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 打字机光标效果 */
+.intro-text::after {
+    content: '|';
+    position: absolute;
+    right: -12px;
+    animation: cursor 1s infinite;
+}
+
+@keyframes cursor {
+    from, to {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+/* 介绍界面 - 黑色背景 */
+#intro-screen {
+    background: #000000;
+}
+
+.intro-text {
+    color: #ffffff;
+    font-size: 24px;
+    text-align: center;
+    opacity: 0;
+    animation: fadeIn 2s forwards;
+}
+
+/* 游戏容器 */
+.game-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background: #000033;
+    overflow: hidden;
+}
+
+/* 游戏画布 */
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* 答题区域 */
+.answer-area {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.answer-content {
+    display: flex;
+    align-items: center;
+    gap: 50px; /* 增加元素之间的间距 */
+    padding-left: 20px; /* 左侧留出空间 */
+}
+
+/* 矩阵显示区域 */
+.matrix-display {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: white;
+    font-size: 14px;
+}
+
+.matrix-A {
+    display: grid;
+    grid-template-columns: repeat(2, 35px);
+    gap: 3px;
+}
+
+.matrix-cell {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    font-size: 14px;
+}
+
+/* 输入区域 */
+.input-section {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+}
+
+/* 特征值输入区域 */
+.eigenvalue-area {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* 特征向量输入区域 */
+.eigenvector-area {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.vector-input {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.input-label {
+    color: white;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+/* 输入框样式 */
+.input-box {
+    width: 45px;
+    height: 28px;
+    padding: 4px;
+    background-color: transparent !important;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+    color: white;
+    text-align: center;
+    font-size: 14px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+.input-box:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.5);
+    background-color: transparent !important;
+}
+
+/* 禁用浏览器自动填充效果 */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    transition-delay: 9999s;
+    transition-property: background-color, color;
+}
+
+/* 输入框占位符样式 */
+.input-box::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* 禁用输入框的默认样式 */
+.input-box::-webkit-inner-spin-button,
+.input-box::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox 输入框样式 */
+.input-box {
+    -moz-appearance: textfield;
+}
+
+/* 提交按钮 */
+.submit-btn {
+    height: 35px;
+    padding: 0 20px;
+    background: linear-gradient(45deg, #1a237e, #0d47a1);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-left: 20px;
+}
+
+/* 调整游戏场景高度 */
+.game-scene {
+    position: relative;
+    width: 100%;
+    height: calc(100vh - 140px);
+    background: #000033;
+    overflow: hidden;
+}
+
+/* 宇航员样式 */
+.player {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-image: url('../images/astronaut.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 1000;
+    pointer-events: none;
+    /* 添加透明度过渡 */
+    transition: opacity 500ms ease-in-out;
+}
+
+.player.moving {
+    z-index: 1000;
+}
+
+/* 星星样式 */
+.star {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background-image: url('../images/star.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 100;
+    transition: all 0.5s ease-out;
+}
+
+.star::after {
+    content: '150';
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    font-size: 14px;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+/* 浮动动画 */
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* 闪烁动画 */
+@keyframes twinkle {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* 状态栏 */
+.game-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    color: white;
+    z-index: 100;
+}
+
+.game-info {
+    display: flex;
+    gap: 20px;
+}
+
+.level-info, .score-info {
+    font-size: 16px;
+}
+
+.timer {
+    font-size: 16px;
+    color: white;
+}
+
+/* 矩阵显示区域 */
+.matrix-container {
+    position: fixed;
+    bottom: 80px;
+    left: 20px;
+    display: flex;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 15px;
+    border-radius: 10px;
+    z-index: 100;
+}
+
+.matrix-label {
+    color: white;
+    margin-right: 10px;
+}
+
+.matrix-A {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-left: 10px;
+}
+
+.matrix-cell {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 18px;
+}
+
+/* 输入区域 */
+.input-section {
+    flex: 1;
+    display: flex;
+    gap: 30px;
+    align-items: center;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.input-group label {
+    color: #333;
+    font-weight: bold;
+}
+
+.input-group input {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+/* 提交按钮 */
+.submit-btn {
+    width: 100%;
+    padding: 12px;
+    background: #1a237e;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.submit-btn:hover {
+    background: #283593;
+}
+
+/* 动画 */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* 工具类 */
+.hidden {
+    display: none !important;
+}
+
+/* 添加矩阵显示样式 */
+.matrix-table {
+    margin: 10px 0;
+    border-collapse: collapse;
+}
+
+.matrix-table td {
+    padding: 8px 15px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+/* 添加星空效果 */
+.game-scene::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(1px 1px at 25% 25%, rgba(255, 255, 255, 0.8) 100%, transparent),
+        radial-gradient(2px 2px at 50% 50%, rgba(255, 255, 255, 0.8) 100%, transparent),
+        radial-gradient(1px 1px at 75% 75%, rgba(255, 255, 255, 0.8) 100%, transparent);
+    background-size: 150px 150px, 200px 200px, 100px 100px;
+    background-repeat: repeat;
+    z-index: 1;
+}
+
+/* 得分显示样式 */
+.game-stats {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    gap: 20px;
+    z-index: 100;
+}
+
+.stat-item {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 8px 15px;
+    border-radius: 20px;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.level-display {
+    position: absolute;
+    top: 20px;
+    left: 200px;
+    color: white;
+    font-size: 24px;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.score-display {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    color: white;
+    font-size: 24px;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.score-label {
+    font-weight: bold;
+}
+
+.score-value {
+    color: #FFD700;
+}
+
+.time-display {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: white;
+    font-size: 24px;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+/* 图标样式 */
+.stat-icon {
+    font-size: 18px;
+}
+
+/* 分数更新动画 */
+@keyframes scoreUpdate {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+        color: #FFD700;
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.score-update {
+    animation: scoreUpdate 0.5s ease-out;
+}
+
+/* 星星样式保持不变 */
+.star {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background-image: url('../images/star.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 100;
+    cursor: pointer;
+}
+
+.star::before {
+    content: attr(data-value);
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.6);
+    padding: 2px 6px;
+    border-radius: 10px;
+    color: #FFD700;
+    font-size: 14px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+/* 分数变化动画 */
+@keyframes scoreChange {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+        color: #FFF;
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.score-change {
+    animation: scoreChange 0.5s ease-out;
+}
+
+/* 宇航员样式 */
+.player {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background-image: url('../assets/astronaut.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    z-index: 1000;
+    transition: left 0.5s, top 0.5s;
+}
+
+/* 星星样式 */
+.star {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background-image: url('../images/star.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 100;
+}
+
+.star-value {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #FFD700;
+    font-size: 14px;
+    text-shadow: 0 0 3px rgba(0,0,0,0.5);
+}
+
+/* 矩阵显示样式 */
+.matrix-display {
+    min-width: 120px;
+    color: white;
+}
+
+.matrix-table {
+    border-collapse: collapse;
+    background: #f5f5f5;
+    border-radius: 4px;
+}
+
+.matrix-table td {
+    padding: 6px 12px;
+    border: 1px solid #ddd;
+    text-align: center;
+    font-size: 16px;
+}
+
+/* 动画效果 */
+@keyframes starTwinkle {
+    from {
+        opacity: 0.4;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+}
+
+/* 游戏界面布局 */
+.game-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    color: white;
+    z-index: 100;
+}
+
+.game-info {
+    display: flex;
+    gap: 20px;
+}
+
+.level-info, .score-info {
+    font-size: 16px;
+}
+
+.timer {
+    font-size: 16px;
+    color: white;
+}
+
+/* 答题区域样式 */
+.answer-area {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    z-index: 1000; /* 确保在画布之上 */
+}
+
+/* 移除底部画布 */
+canvas {
+    z-index: 1; /* 确保画布在答题区域下方 */
+}
+
+/* 答题内容容器 */
+.answer-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    width: 100%;
+    padding: 0 20px;
+}
+
+/* 矩阵显示区域 */
+.matrix-area {
+    display: flex;
+    align-items: center;
+    color: white;
+    white-space: nowrap;
+}
+
+/* 输入区域 */
+.input-section {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+/* 输入框样式 */
+.input-box {
+    width: 60px;
+    height: 30px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    color: #000033;
+    text-align: center;
+    border-radius: 4px;
+    font-size: 16px;
+    padding: 0 5px;
+    outline: none;
+    -webkit-appearance: textfield;
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+.input-box:focus {
+    border-color: #ffffff;
+    background: #ffffff;
+}
+
+/* 占位符文本样式 */
+.input-box::placeholder {
+    color: rgba(0, 0, 51, 0.5);
+}
+
+/* 提交按钮 */
+.submit-btn {
+    padding: 6px 20px;
+    background: #1a237e;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* 确保所有输入框和标签的样式一致 */
+.input-box {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* 添加星星收集动画 */
+@keyframes collect {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(0);
+        opacity: 0;
+    }
+}
+
+/* 添加宇航员漂浮动画 */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* 宇航员移动时的过渡效果 */
+.astronaut.moving {
+    transition: left 0.5s ease-out, top 0.5s ease-out;
+}
+
+/* 动画效果 */
+@keyframes twinkle {
+    0% {
+        opacity: 0.4;
+        transform: scale(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+}
+
+/* 添加游戏结束界面样式 */
+#game-over-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.95); /* 近乎全黑的背景 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* 确保在最上层 */
+}
+
+.game-over-content {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 40px 60px;
+    border-radius: 10px;
+    text-align: center;
+    color: white;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.game-over-content h2 {
+    font-size: 36px;
+    margin-bottom: 30px;
+    color: #fff;
+}
+
+.game-over-content p {
+    font-size: 24px;
+    margin: 15px 0;
+    color: #fff;
+}
+
+.restart-btn {
+    margin-top: 30px;
+    padding: 15px 40px;
+    font-size: 20px;
+    background: linear-gradient(45deg, #1a237e, #0d47a1);
+    color: white;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.restart-btn:hover {
+    transform: scale(1.05);
+    background: linear-gradient(45deg, #283593, #1565c0);
+}
+
+/* 确保其他元素在游戏结束时被隐藏 */
+.screen.hidden {
+    display: none !important;
+}
+
+/* 输入区域样式 */
+.answer-area {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100px;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    padding: 10px;
+    z-index: 1000;
+}
+
+/* 添加星星闪烁动画 */
+.star {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background-image: url('../images/star.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 100;
+    animation: twinkle 1.5s infinite ease-in-out;
+}
+
+@keyframes twinkle {
+    0% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+/* 添加宇航员漂浮动画 */
+.player {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-image: url('../images/astronaut.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 1000;
+    animation: float 3s infinite ease-in-out;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+/* 输入框和按钮样式优化 */
+.input-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.input-box {
+    width: 60px;
+    height: 35px;
+    padding: 5px;
+    border: 2px solid #1a237e;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 16px;
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.input-box:focus {
+    outline: none;
+    border-color: #3f51b5;
+    box-shadow: 0 0 5px rgba(63, 81, 181, 0.5);
+}
+
+.submit-btn {
+    padding: 10px 30px;
+    background: #1a237e;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.submit-btn:hover {
+    background: #283593;
+    transform: scale(1.05);
+}
+
+/* 答题区域样式补充 */
+.matrix-display {
+    color: white;
+    margin-right: 20px;
+}
+
+.matrix-label {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.matrix {
+    display: grid;
+    grid-template-columns: repeat(2, 40px);
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.matrix span {
+    text-align: center;
+    font-size: 16px;
+}
+
+.input-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.input-wrapper label {
+    color: white;
+    font-size: 14px;
+}
+
+.vector-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.vector-group label {
+    color: white;
+    font-size: 14px;
+}
+
+/* 游戏信息区域样式 */
+.game-info {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    z-index: 1000;
+}
+
+.left-info, .right-info {
+    display: flex;
+    gap: 20px;
+    color: white;
+    font-size: 16px;
+}
+
+.level, .score, .timer {
+    background: rgba(26, 35, 126, 0.6);
+    padding: 5px 15px;
+    border-radius: 15px;
+    font-weight: bold;
+}
+
+/* 调整游戏场景位置以适应信息栏 */
+.game-scene {
+    position: absolute;
+    top: 50px; /* 留出顶部信息栏空间 */
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 200px); /* 减去顶部信息栏和底部答题区域的高度 */
+    background: rgba(0, 0, 51, 0.9); /* 深蓝色背景 */
+    overflow: hidden;
+}
+
+/* 游戏消息样式 */
+.game-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 15px 30px;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    z-index: 1000;
+    animation: fadeInOut 2s ease-in-out;
+}
+
+.game-message.error {
+    background: rgba(255, 0, 0, 0.8);
+}
+
+.game-message.success {
+    background: rgba(0, 255, 0, 0.8);
+}
+
+.game-message.info {
+    background: rgba(0, 0, 255, 0.8);
+}
+
+@keyframes fadeInOut {
+    0% { opacity: 0; }
+    15% { opacity: 1; }
+    85% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+/* 游戏结束界面样式 */
+.game-over-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 3000;
+}
+
+.game-over-content {
+    background: rgba(26, 35, 126, 0.9);
+    padding: 30px 50px;
+    border-radius: 10px;
+    text-align: center;
+    color: white;
+}
+
+.game-over-content h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.game-over-content p {
+    margin: 10px 0;
+    font-size: 18px;
+}
+
+.restart-btn {
+    margin-top: 20px;
+    padding: 10px 30px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.restart-btn:hover {
+    background: #45a049;
+}
+
+/* 输入区域标签样式 */
+.input-label {
+    color: white;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+/* 答案显示样式 */
+.answer-display {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 51, 0.9);
+    color: white;
+    padding: 8px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    font-size: 14px;
+}
+
+.answer-display span {
+    padding: 4px 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+/* 矩阵显示区域 */
+.matrix-display {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: white;
+}
+
+.matrix-A {
+    display: grid;
+    grid-template-columns: repeat(2, 40px);
+    gap: 5px;
+}
+
+.matrix-cell {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+}
+
+/* 输入区域 */
+.input-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.eigenvalue-area,
+.eigenvector-area {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.input-group {
+    display: flex;
+    gap: 15px;
+}
+
+.vector-input {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.input-box {
+    width: 50px;
+    height: 30px;
+    padding: 5px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+    color: white;
+    text-align: center;
+}
+
+/* 游戏头部信息样式 */
+.game-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    color: white;
+    z-index: 100;
+}
+
+.game-info {
+    display: flex;
+    gap: 30px;
+    font-size: 16px;
+}
+
+.level-info, .score-info {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.timer {
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+}
+
+/* 确保游戏场景位置正确 */
+.game-scene {
+    position: fixed;
+    top: 50px; /* 头部信息栏高度 */
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 150px); /* 减去头部和答题区域的高度 */
+    background: rgba(0, 0, 51, 0.9);
+    overflow: hidden;
+}
+
+/* 背景星星样式 */
+.background-star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.3;
+    animation: twinkle 2s infinite;
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.8; }
+}
+
+/* 游戏场景样式 */
+.game-scene {
+    position: absolute;
+    top: 40px;
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 140px);
+    background: #000033;
+    overflow: hidden;
+    z-index: 1;
+}
+
+/* 确保宇航员和游戏星星在背景星星之上 */
+.player, .star {
+    z-index: 2;
+}
+
+/* 星星收集动画 */
+@keyframes collect {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(0);
+        opacity: 0;
+    }
+}
+
+.star.collect {
+    animation: collect 0.5s ease-out forwards;
+}
+
+/* 宇航员移动时的样式 */
+.player.moving {
+    z-index: 1000;
+}
+
+/* 确保星星和宇航员的大小一致 */
+.star {
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition: transform 0.3s ease-out;
+}
+
+.player {
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 100;
+}
